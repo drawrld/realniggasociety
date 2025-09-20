@@ -1,143 +1,301 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Admin</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>RNS Roster</title>
   <style>
-    body, html {
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+   
+    body {
       margin: 0;
-      padding: 0;
-      height: 100%;
-      width: 100%;
-      overflow: hidden;
-      font-family: Arial, sans-serif;
-    }
-
-    /* Intro screen */
-    #intro {
-      position: fixed;
-      top: 0;
-      left: 0;
-      height: 100%;
-      width: 100%;
-      background: black;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: 4rem;
-      cursor: pointer;
-      z-index: 9999;
-    }
-    #intro.fly-out {
-      animation: flyOut 1s forwards;
-    }
-    @keyframes flyOut {
-      0% { transform: translate(0,0); opacity: 1; }
-      100% { transform: translateY(-200%) scale(2); opacity: 0; }
-    }
-
-    /* Main site */
-    #main {
-      display: none;
-      height: 100%;
-      width: 100%;
-      background-image: 
-        linear-gradient(to right, #222 1px, transparent 1px),
-        linear-gradient(to bottom, #222 1px, transparent 1px);
+      height: 100vh;
+      background-color: #121212;
+      background-image:
+        linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px),
+        linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px);
       background-size: 40px 40px;
-      position: relative;
+      font-family: 'Poppins', sans-serif;
+      color: #eee;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      animation: pulse 5s infinite alternate;
     }
 
-    /* Bottom right image */
-    #corner-img {
+   
+    @keyframes pulse {
+      0% {
+        background-color: #121212;
+      }
+      50% {
+        background-color: #1d1d1d;
+      }
+      100% {
+        background-color: #121212;
+      }
+    }
+
+    .cabinet {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+      max-width: 900px;
+      justify-content: center;
+    }
+
+    .file {
+      position: relative;
+      width: 180px;
+      height: 60px;
+      background: #1e1e1e;
+      border-radius: 8px 8px 0 0;
+      box-shadow: inset 0 -4px 8px rgba(255,255,255,0.1);
+      cursor: pointer;
+      overflow: hidden;
+      transition: height 0.35s ease, box-shadow 0.3s ease;
+    }
+
+  
+    .file:hover {
+      height: 280px;
+      box-shadow: 0 4px 20px rgba(255, 255, 255, 0.3);
+    }
+
+  
+    .file::before {
+      content: "";
       position: absolute;
-      bottom: 0;
-      right: 0;
-      max-width: 60%;
-      max-height: 80%;
-      opacity: 0.2;
+      top: 0; left: 0;
+      width: 100%;
+      height: 20px;
+      background: #292929;
+      border-radius: 8px 8px 0 0;
+      box-shadow: inset 0 -2px 5px rgba(255,255,255,0.07);
+    }
+
+   
+    .file .name {
+      position: absolute;
+      top: 5px;
+      left: 15px;
+      font-weight: 600;
+      font-size: 1.1rem;
+      user-select: none;
       pointer-events: none;
     }
 
-    /* Admin center */
-    .admin-container {
+    
+    .file .avatar-closed {
       position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      display: flex;
-      align-items: center;
+      top: 7px;
+      right: 15px;
+      font-size: 1.4rem;
+      user-select: none;
+      color: #aaa;
+      pointer-events: none;
+      font-family: monospace;
     }
 
-    .admin-text {
-      font-size: 3rem;
-      color: white;
-      background: rgba(0,0,0,0.6);
-      padding: 10px 20px;
-      border-radius: 8px;
-      transition: transform 0.5s;
-      cursor: pointer;
-      position: relative;
-      z-index: 2;
-    }
-
-    .profile {
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      overflow: hidden;
-      margin-left: -70px; /* hidden behind Admin */
+    
+    .file .content {
       opacity: 0;
-      transition: all 0.5s;
+      pointer-events: none;
+      padding: 30px 20px 20px 20px;
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      transition: opacity 0.3s ease 0.2s;
     }
 
-    .profile img {
+    
+    .file:hover .content {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+   
+    .content .avatar-open {
+      font-size: 6rem;
+      font-family: monospace;
+      color: #eee;
+      user-select: none;
+    }
+
+   
+    .socials {
+      display: flex;
+      gap: 18px;
+    }
+
+   
+    .socials a {
+      display: inline-block;
+      width: 28px;
+      height: 28px;
+      fill: #eee;
+      opacity: 0.7;
+      transition: opacity 0.3s ease, filter 0.3s ease;
+    }
+
+    .socials a:hover {
+      opacity: 1;
+      filter: drop-shadow(0 0 6px #00bfff);
+    }
+
+    
+    .socials svg {
       width: 100%;
       height: 100%;
-    }
-
-    .admin-container:hover .admin-text {
-      transform: translateX(-80px);
-    }
-
-    .admin-container:hover .profile {
-      margin-left: 10px;
-      opacity: 1;
     }
   </style>
 </head>
 <body>
-  <!-- Intro -->
-  <div id="intro">:))</div>
 
-  <!-- Main -->
-  <div id="main">
-    <img id="corner-img" src="ea52227d-953f-4ef2-b968-13ebd7d67848.jpg" alt="corner image">
+  
+  <audio id="bg-music" autoplay loop>
+    <source src="https://files.catbox.moe/6r1hkn.m4a" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
 
-    <div class="admin-container">
-      <div class="admin-text">Admin</div>
-      <div class="profile">
-        <img src="https://files.catbox.moe/q2gde7.gif" alt="profile">
+  <div class="cabinet">
+
+   
+    <div class="file">
+      <div class="name">Quitz</div>
+      <div class="avatar-closed">
+        <img src="https://files.catbox.moe/dk9vd7.jpeg" alt="Quitz" style="width: 40px; height: 40px; border-radius: 50%;">
+      </div>
+      <div class="content">
+        <div class="avatar-open">
+          <img src="https://files.catbox.moe/dk9vd7.jpeg" alt="Quitz" style="width: 120px; height: 120px; border-radius: 50%;">
+        </div>
+        <div class="socials">
+          <a href="https://t.me/lprxsy" target="_blank" rel="noopener" aria-label="Telegram Quitz">
+            <svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M120 0C53.729 0 0 53.729 0 120s53.729 120 120 120 120-53.729 120-120S186.271 0 120 0zm56.022 80.99l-21.173 99.814c-1.59 7.188-11.477 9.213-16.86 4.165l-35.395-32.937-17.067 16.396c-1.879 1.87-3.45 3.45-7.047 3.45l2.516-35.545 64.705-58.392c2.812-2.516-.61-3.936-4.34-1.42l-79.985 50.337-34.44-10.76c-7.46-2.33-7.61-7.46 1.57-11.04l131.923-50.84c6.123-2.333 11.47 1.42 9.97 11.037z"/>
+            </svg>
+          </a>
+        </div>
       </div>
     </div>
 
-    <audio id="bg-music" src="https://files.catbox.moe/2y9yol.mp3" loop></audio>
+   
+    <div class="file">
+      <div class="name">Lurkingg</div>
+      <div class="avatar-closed">
+        <img src="https://files.catbox.moe/gesdyd.jpeg" alt="Lurkingg" style="width: 40px; height: 40px; border-radius: 50%;">
+      </div>
+      <div class="content">
+        <div class="avatar-open">
+          <img src="https://files.catbox.moe/gesdyd.jpeg" alt="Lurkingg" style="width: 120px; height: 120px; border-radius: 50%;">
+        </div>
+        <div class="socials">
+          <a href="https://t.me/TempelOfAstaroth" target="_blank" rel="noopener" aria-label="Telegram Lurkingg">
+            <svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M120 0C53.729 0 0 53.729 0 120s53.729 120 120 120 120-53.729 120-120S186.271 0 120 0zm56.022 80.99l-21.173 99.814c-1.59 7.188-11.477 9.213-16.86 4.165l-35.395-32.937-17.067 16.396c-1.879 1.87-3.45 3.45-
+          <img src="https://files.catbox.moe/gesdyd.jpeg" alt="Lurkingg" style="width: 120px; height: 120px; border-radius: 50%;">
+        </div>
+        <div class="socials">
+          <a href="https://t.me/TempelOfAstaroth" target="_blank" rel="noopener" aria-label="Telegram Lurkingg">
+            <svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M120 0C53.729 0 0 53.729 0 120s53.729 120 120 120 120-53.729 120-120S186.271 0 120 0zm56.022 80.99l-21.173 99.814c-1.59 7.188-11.477 9.213-16.86 4.165l-35.395-32.937-17.067 16.396c-1.879 1.87-3.45 3.45-7.047 3.45l2.516-35.545 64.705-58.392c2.812-2.516-.61-3.936-4.34-1.42l-79.985 50.337-34.44-10.76c-7.46-2.33-7.61-7.46 1.57-11.04l131.923-50.84c6.123-2.333 11.47 1.42 9.97 11.037z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="file">
+      <div class="name">Abuse</div>
+      <div class="avatar-closed">RNS</div>
+      <div class="content">
+        <div class="avatar-open">
+          <img src="https://files.catbox.moe/egmjaw.jpeg" alt="Abuse" style="width: 120px; height: 120px; border-radius: 50%;">
+        </div>
+        <div class="socials">
+          <a href="https://t.me/SlitTown" target="_blank" rel="noopener" aria-label="Telegram Abuse">
+            <svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M120 0C53.729 0 0 53.729 0 120s53.729 120 120 120 120-53.729 120-120S186.271 0 120 0zm56.022 80.99l-21.173 99.814c-1.59 7.188-11.477 9.213-16.86 4.165l-35.395-32.937-17.067 16.396c-1.879 1.87-3.45 3.45-7.047 3.45l2.516-35.545 64.705-58.392c2.812-2.516-.61-3.936-4.34-1.42l-79.985 50.337-34.44-10.76c-7.46-2.33-7.61-7.46 1.57-11.04l131.923-50.84c6.123-2.333 11.47 1.42 9.97 11.037z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+   
+    <div class="file">
+      <div class="name">Arukk</div>
+      <div class="avatar-closed">RNS</div>
+      <div class="content">
+        <div class="avatar-open">
+          <img src="https://files.catbox.moe/egmjaw.jpeg" alt="Arukk" style="width: 120px; height: 120px; border-radius: 50%;">
+        </div>
+        <div class="socials">
+         
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="file">
+      <div class="name">Terrormachine</div>
+      <div class="avatar-closed">RNS</div>
+      <div class="content">
+        <div class="avatar-open">
+          <img src="https://files.catbox.moe/egmjaw.jpeg" alt="Terrormachine" style="width: 120px; height: 120px; border-radius: 50%;">
+        </div>
+        <div class="socials">
+          <a href="https://t.me/touchingherprincessparts" target="_blank" rel="noopener" aria-label="Telegram Terrormachine">
+            <svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M120 0C53.729 0 0 53.729 0 120s53.729 120 120 120 120-53.729 120-120S186.271 0 120 0zm56.022 80.99l-21.173 99.814c-1.59 7.188-11.477 9.213-16.86 4.165l-35.395-32.937-17.067 16.396c-1.879 1.87-3.45 3.45-7.047 3.45l2.516-35.545 64.705-58.392c2.812-2.516-.61-3.936-4.34-1.42l-79.985 50.337-34.44-10.76c-7.46-2.33-7.61-7.46 1.57-11.04l131.923-50.84c6.123-2.333 11.47 1.42 9.97 11.037z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="file">
+      <div class="name">Gores</div>
+      <div class="avatar-closed">RNS</div>
+      <div class="content">
+        <div class="avatar-open">
+          <img src="https://files.catbox.moe/egmjaw.jpeg" alt="Gores" style="width: 120px; height: 120px; border-radius: 50%;">
+        </div>
+        <div class="socials">
+          <a href="https://t.me/touchingherprincessparts" target="_blank" rel="noopener" aria-label="Telegram Gores">
+            <svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M120 0C53.729 0 0 53.729 0 120s53.729 120 120 120 120-53.729 120-120S186.271 0 120 0zm56.022 80.99l-21.173 99.814c-1.59 7.188-11.477 9.213-16.86 4.165l-35.395-32.937-17.067 16.396c-1.879 1.87-3.45 3.45-7.047 3.45l2.516-35.545 64.705-58.392c2.812-2.516-.61-3.936-4.34-1.42l-79.985 50.337-34.44-10.76c-7.46-2.33-7.61-7.46 1.57-11.04l131.923-50.84c6.123-2.333 11.47 1.42 9.97 11.037z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="file">
+      <div class="name">Yuri</div>
+      <div class="avatar-closed">RNS</div>
+      <div class="content">
+        <div class="avatar-open">
+          <img src="https://files.catbox.moe/egmjaw.jpeg" alt="Yuri" style="width: 120px; height: 120px; border-radius: 50%;">
+        </div>
+        <div class="socials">
+          <a href="https://t.me/qwerty7054" target="_blank" rel="noopener" aria-label="Telegram Yuri">
+            <svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M120 0C53.729 0 0 53.729 0 120s53.729 120 120 120 120-53.729 120-120S186.271 0 120 0zm56.022 80.99l-21.173 99.814c-1.59 7.188-11.477 9.213-16.86 4.165l-35.395-32.937-17.067 16.396c-1.879 1.87-3.45 3.45-7.047 3.45l2.516-35.545 64.705-58.392c2.812-2.516-.61-3.936-4.34-1.42l-79.985 50.337-34.44-10.76c-7.46-2.33-7.61-7.46 1.57-11.04l131.923-50.84c6.123-2.333 11.47 1.42 9.97 11.037z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
   </div>
 
-  <script>
-    const intro = document.getElementById("intro");
-    const main = document.getElementById("main");
-    const music = document.getElementById("bg-music");
-
-    intro.addEventListener("click", () => {
-      intro.classList.add("fly-out");
-      setTimeout(() => {
-        intro.style.display = "none";
-        main.style.display = "block";
-        music.play();
-      }, 1000);
-    });
-  </script>
 </body>
 </html>
