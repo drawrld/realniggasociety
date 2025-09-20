@@ -4,12 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>RNS Roster</title>
+
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 
-   
     body {
       margin: 0;
+      overflow: hidden;
       height: 100vh;
       background-color: #121212;
       background-image:
@@ -21,28 +22,16 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      animation: pulse 5s infinite alternate;
-    }
-
-   
-    @keyframes pulse {
-      0% {
-        background-color: #121212;
-      }
-      50% {
-        background-color: #1d1d1d;
-      }
-      100% {
-        background-color: #121212;
-      }
+      flex-direction: column;
     }
 
     .cabinet {
       display: flex;
-      gap: 24px;
       flex-wrap: wrap;
-      max-width: 900px;
+      gap: 24px;
       justify-content: center;
+      max-width: 1200px;
+      z-index: 1;
     }
 
     .file {
@@ -57,13 +46,11 @@
       transition: height 0.35s ease, box-shadow 0.3s ease;
     }
 
-  
     .file:hover {
       height: 280px;
       box-shadow: 0 4px 20px rgba(255, 255, 255, 0.3);
     }
 
-  
     .file::before {
       content: "";
       position: absolute;
@@ -75,7 +62,6 @@
       box-shadow: inset 0 -2px 5px rgba(255,255,255,0.07);
     }
 
-   
     .file .name {
       position: absolute;
       top: 5px;
@@ -86,7 +72,6 @@
       pointer-events: none;
     }
 
-    
     .file .avatar-closed {
       position: absolute;
       top: 7px;
@@ -98,7 +83,6 @@
       font-family: monospace;
     }
 
-    
     .file .content {
       opacity: 0;
       pointer-events: none;
@@ -111,27 +95,23 @@
       transition: opacity 0.3s ease 0.2s;
     }
 
-    
     .file:hover .content {
       opacity: 1;
       pointer-events: auto;
     }
 
-   
-    .content .avatar-open {
-      font-size: 6rem;
-      font-family: monospace;
-      color: #eee;
-      user-select: none;
+    .avatar-open img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
     }
 
-   
     .socials {
       display: flex;
       gap: 18px;
     }
 
-   
     .socials a {
       display: inline-block;
       width: 28px;
@@ -146,156 +126,133 @@
       filter: drop-shadow(0 0 6px #00bfff);
     }
 
-    
     .socials svg {
       width: 100%;
       height: 100%;
+    }
+
+    /* Bottom-right image */
+    .bottom-right {
+      position: fixed;
+      bottom: 10px;
+      right: 10px;
+      image-rendering: pixelated;
+      width: 100px;
+      z-index: 2;
+    }
+
+    /* Floating smileys */
+    .smiley {
+      position: absolute;
+      font-size: 20px;
+      user-select: none;
+      pointer-events: none;
+      color: #eee;
+      z-index: 0;
     }
   </style>
 </head>
 <body>
 
-  
-  <audio id="bg-music" autoplay loop>
-    <source src="https://files.catbox.moe/6r1hkn.m4a" type="audio/mpeg">
+  <div class="cabinet">
+    <!-- Replace the following with your full RNS roster -->
+    <!-- Avatar defaults -->
+    <script>
+      const members = [
+        { name: 'Ritual', link: 'https://t.me/SpiritualActivity' },
+        { name: 'Cautious', link: 'https://t.me/deathcasket' },
+        { name: 'Abuse', link: 'https://t.me/SlitTown' },
+        { name: 'Arukk' },
+        { name: 'Lurkingg', link: 'https://t.me/TempelOfAstaroth', img: 'https://files.catbox.moe/gesdyd.jpeg' },
+        { name: 'Terrormachine', link: 'https://t.me/touchingherprincessparts' },
+        { name: 'Gores', link: 'https://t.me/touchingherprincessparts' },
+        { name: 'Yuri', link: 'https://t.me/qwerty7054' },
+        { name: 'Relief', link: 'https://t.me/reliefxd' },
+        { name: 'Cyko' },
+        { name: 'quitz', link: 'https://t.me/lprxsy', img: 'https://files.catbox.moe/dk9vd7.jpeg' }
+      ];
+
+      document.addEventListener('DOMContentLoaded', () => {
+        const cabinet = document.querySelector('.cabinet');
+        members.forEach(member => {
+          const file = document.createElement('div');
+          file.className = 'file';
+
+          file.innerHTML = `
+            <div class="name">${member.name}</div>
+            <div class="avatar-closed">X_X</div>
+            <div class="content">
+              <div class="avatar-open">
+                <img src="${member.img || 'https://files.catbox.moe/egmjaw.jpeg'}" alt="${member.name}" />
+              </div>
+              <div class="socials">
+                ${member.link ? `
+                  <a href="${member.link}" target="_blank" aria-label="Telegram ${member.name}">
+                    <svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M120 0C53.729 0 0 53.729 0 120s53.729 120 120 120 120-53.729 120-120S186.271 0 120 0zm56.022 80.99l-21.173 99.814c-1.59 7.188-11.477 9.213-16.86 4.165l-35.395-32.937-17.067 16.396c-1.879 1.87-3.45 3.45-7.047 3.45l2.516-35.545 64.705-58.392c2.812-2.516-.61-3.936-4.34-1.42l-79.985 50.337-34.44-10.76c-7.46-2.33-7.61-7.46 1.57-11.04l131.923-50.84c6.123-2.333 11.47 1.42 9.97 11.037z"/>
+                    </svg>
+                  </a>
+                ` : ''}
+              </div>
+            </div>
+          `;
+          cabinet.appendChild(file);
+        });
+      });
+    </script>
+  </div>
+
+  <!-- Background music -->
+  <audio id="bg-music" loop>
+    <source src="https://files.catbox.moe/6r1hkn.m4a" type="audio/mp4">
     Your browser does not support the audio element.
   </audio>
 
-  <div class="cabinet">
+  <!-- Pixelated corner image -->
+  <img src="https://files.catbox.moe/s402yr.png" class="bottom-right" alt="Corner Art" />
 
-   
-    <div class="file">
-      <div class="name">Quitz</div>
-      <div class="avatar-closed">
-        <img src="https://files.catbox.moe/dk9vd7.jpeg" alt="Quitz" style="width: 40px; height: 40px; border-radius: 50%;">
-      </div>
-      <div class="content">
-        <div class="avatar-open">
-          <img src="https://files.catbox.moe/dk9vd7.jpeg" alt="Quitz" style="width: 120px; height: 120px; border-radius: 50%;">
-        </div>
-        <div class="socials">
-          <a href="https://t.me/lprxsy" target="_blank" rel="noopener" aria-label="Telegram Quitz">
-            <svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <path d="M120 0C53.729 0 0 53.729 0 120s53.729 120 120 120 120-53.729 120-120S186.271 0 120 0zm56.022 80.99l-21.173 99.814c-1.59 7.188-11.477 9.213-16.86 4.165l-35.395-32.937-17.067 16.396c-1.879 1.87-3.45 3.45-7.047 3.45l2.516-35.545 64.705-58.392c2.812-2.516-.61-3.936-4.34-1.42l-79.985 50.337-34.44-10.76c-7.46-2.33-7.61-7.46 1.57-11.04l131.923-50.84c6.123-2.333 11.47 1.42 9.97 11.037z"/>
-            </svg>
-          </a>
-        </div>
-      </div>
-    </div>
+  <!-- Smiley Bouncer Script -->
+  <script>
+    document.addEventListener('click', () => {
+      const audio = document.getElementById('bg-music');
+      if (audio.paused) {
+        audio.play().catch(() => {});
+      }
+    });
 
-   
-    <div class="file">
-      <div class="name">Lurkingg</div>
-      <div class="avatar-closed">
-        <img src="https://files.catbox.moe/gesdyd.jpeg" alt="Lurkingg" style="width: 40px; height: 40px; border-radius: 50%;">
-      </div>
-      <div class="content">
-        <div class="avatar-open">
-          <img src="https://files.catbox.moe/gesdyd.jpeg" alt="Lurkingg" style="width: 120px; height: 120px; border-radius: 50%;">
-        </div>
-        <div class="socials">
-          <a href="https://t.me/TempelOfAstaroth" target="_blank" rel="noopener" aria-label="Telegram Lurkingg">
-            <svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <path d="M120 0C53.729 0 0 53.729 0 120s53.729 120 120 120 120-53.729 120-120S186.271 0 120 0zm56.022 80.99l-21.173 99.814c-1.59 7.188-11.477 9.213-16.86 4.165l-35.395-32.937-17.067 16.396c-1.879 1.87-3.45 3.45-
-          <img src="https://files.catbox.moe/gesdyd.jpeg" alt="Lurkingg" style="width: 120px; height: 120px; border-radius: 50%;">
-        </div>
-        <div class="socials">
-          <a href="https://t.me/TempelOfAstaroth" target="_blank" rel="noopener" aria-label="Telegram Lurkingg">
-            <svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <path d="M120 0C53.729 0 0 53.729 0 120s53.729 120 120 120 120-53.729 120-120S186.271 0 120 0zm56.022 80.99l-21.173 99.814c-1.59 7.188-11.477 9.213-16.86 4.165l-35.395-32.937-17.067 16.396c-1.879 1.87-3.45 3.45-7.047 3.45l2.516-35.545 64.705-58.392c2.812-2.516-.61-3.936-4.34-1.42l-79.985 50.337-34.44-10.76c-7.46-2.33-7.61-7.46 1.57-11.04l131.923-50.84c6.123-2.333 11.47 1.42 9.97 11.037z"/>
-            </svg>
-          </a>
-        </div>
-      </div>
-    </div>
+    const smileyCount = 10;
+    const smileys = [];
 
-    
-    <div class="file">
-      <div class="name">Abuse</div>
-      <div class="avatar-closed">RNS</div>
-      <div class="content">
-        <div class="avatar-open">
-          <img src="https://files.catbox.moe/egmjaw.jpeg" alt="Abuse" style="width: 120px; height: 120px; border-radius: 50%;">
-        </div>
-        <div class="socials">
-          <a href="https://t.me/SlitTown" target="_blank" rel="noopener" aria-label="Telegram Abuse">
-            <svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <path d="M120 0C53.729 0 0 53.729 0 120s53.729 120 120 120 120-53.729 120-120S186.271 0 120 0zm56.022 80.99l-21.173 99.814c-1.59 7.188-11.477 9.213-16.86 4.165l-35.395-32.937-17.067 16.396c-1.879 1.87-3.45 3.45-7.047 3.45l2.516-35.545 64.705-58.392c2.812-2.516-.61-3.936-4.34-1.42l-79.985 50.337-34.44-10.76c-7.46-2.33-7.61-7.46 1.57-11.04l131.923-50.84c6.123-2.333 11.47 1.42 9.97 11.037z"/>
-            </svg>
-          </a>
-        </div>
-      </div>
-    </div>
+    for (let i = 0; i < smileyCount; i++) {
+      const el = document.createElement('div');
+      el.className = 'smiley';
+      el.textContent = ':)';
+      document.body.appendChild(el);
 
-   
-    <div class="file">
-      <div class="name">Arukk</div>
-      <div class="avatar-closed">RNS</div>
-      <div class="content">
-        <div class="avatar-open">
-          <img src="https://files.catbox.moe/egmjaw.jpeg" alt="Arukk" style="width: 120px; height: 120px; border-radius: 50%;">
-        </div>
-        <div class="socials">
-         
-        </div>
-      </div>
-    </div>
+      smileys.push({
+        el,
+        x: Math.random() * window.innerWidth,
+        y: Math.random() * window.innerHeight,
+        dx: (Math.random() * 2 - 1) * 2,
+        dy: (Math.random() * 2 - 1) * 2
+      });
+    }
 
-    
-    <div class="file">
-      <div class="name">Terrormachine</div>
-      <div class="avatar-closed">RNS</div>
-      <div class="content">
-        <div class="avatar-open">
-          <img src="https://files.catbox.moe/egmjaw.jpeg" alt="Terrormachine" style="width: 120px; height: 120px; border-radius: 50%;">
-        </div>
-        <div class="socials">
-          <a href="https://t.me/touchingherprincessparts" target="_blank" rel="noopener" aria-label="Telegram Terrormachine">
-            <svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <path d="M120 0C53.729 0 0 53.729 0 120s53.729 120 120 120 120-53.729 120-120S186.271 0 120 0zm56.022 80.99l-21.173 99.814c-1.59 7.188-11.477 9.213-16.86 4.165l-35.395-32.937-17.067 16.396c-1.879 1.87-3.45 3.45-7.047 3.45l2.516-35.545 64.705-58.392c2.812-2.516-.61-3.936-4.34-1.42l-79.985 50.337-34.44-10.76c-7.46-2.33-7.61-7.46 1.57-11.04l131.923-50.84c6.123-2.333 11.47 1.42 9.97 11.037z"/>
-            </svg>
-          </a>
-        </div>
-      </div>
-    </div>
+    function animateSmileys() {
+      smileys.forEach(s => {
+        s.x += s.dx;
+        s.y += s.dy;
 
-    
-    <div class="file">
-      <div class="name">Gores</div>
-      <div class="avatar-closed">RNS</div>
-      <div class="content">
-        <div class="avatar-open">
-          <img src="https://files.catbox.moe/egmjaw.jpeg" alt="Gores" style="width: 120px; height: 120px; border-radius: 50%;">
-        </div>
-        <div class="socials">
-          <a href="https://t.me/touchingherprincessparts" target="_blank" rel="noopener" aria-label="Telegram Gores">
-            <svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <path d="M120 0C53.729 0 0 53.729 0 120s53.729 120 120 120 120-53.729 120-120S186.271 0 120 0zm56.022 80.99l-21.173 99.814c-1.59 7.188-11.477 9.213-16.86 4.165l-35.395-32.937-17.067 16.396c-1.879 1.87-3.45 3.45-7.047 3.45l2.516-35.545 64.705-58.392c2.812-2.516-.61-3.936-4.34-1.42l-79.985 50.337-34.44-10.76c-7.46-2.33-7.61-7.46 1.57-11.04l131.923-50.84c6.123-2.333 11.47 1.42 9.97 11.037z"/>
-            </svg>
-          </a>
-        </div>
-      </div>
-    </div>
+        if (s.x <= 0 || s.x >= window.innerWidth - 20) s.dx *= -1;
+        if (s.y <= 0 || s.y >= window.innerHeight - 20) s.dy *= -1;
 
-    
-    <div class="file">
-      <div class="name">Yuri</div>
-      <div class="avatar-closed">RNS</div>
-      <div class="content">
-        <div class="avatar-open">
-          <img src="https://files.catbox.moe/egmjaw.jpeg" alt="Yuri" style="width: 120px; height: 120px; border-radius: 50%;">
-        </div>
-        <div class="socials">
-          <a href="https://t.me/qwerty7054" target="_blank" rel="noopener" aria-label="Telegram Yuri">
-            <svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <path d="M120 0C53.729 0 0 53.729 0 120s53.729 120 120 120 120-53.729 120-120S186.271 0 120 0zm56.022 80.99l-21.173 99.814c-1.59 7.188-11.477 9.213-16.86 4.165l-35.395-32.937-17.067 16.396c-1.879 1.87-3.45 3.45-7.047 3.45l2.516-35.545 64.705-58.392c2.812-2.516-.61-3.936-4.34-1.42l-79.985 50.337-34.44-10.76c-7.46-2.33-7.61-7.46 1.57-11.04l131.923-50.84c6.123-2.333 11.47 1.42 9.97 11.037z"/>
-            </svg>
-          </a>
-        </div>
-      </div>
-    </div>
+        s.el.style.left = `${s.x}px`;
+        s.el.style.top = `${s.y}px`;
+      });
+      requestAnimationFrame(animateSmileys);
+    }
 
-  </div>
-
+    animateSmileys();
+  </script>
 </body>
 </html>
